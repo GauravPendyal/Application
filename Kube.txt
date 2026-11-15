@@ -1,0 +1,117 @@
+# ==========================================
+# PART A: KUBERNETES WITH MINIKUBE
+# ==========================================
+
+# 1. Check prerequisites
+docker --version
+minikube version
+
+# 2. Start Minikube
+minikube start --driver=docker
+
+# 3. Check cluster status
+minikube status
+
+# 4. View Kubernetes nodes and system pods
+minikube kubectl -- get nodes
+minikube kubectl -- get pods -A
+
+# 5. Create Nginx deployment
+minikube kubectl -- create deployment mynginx --image=nginx
+
+# 6. Verify deployment and pods
+minikube kubectl -- get deployments
+minikube kubectl -- get pods
+minikube kubectl -- describe pods
+
+# 7. Expose deployment using NodePort
+minikube kubectl -- expose deployment mynginx --type=NodePort --port=80 --target-port=80
+
+# 8. View services
+minikube kubectl -- get services
+
+# 9. Scale deployment to 4 replicas
+minikube kubectl -- scale deployment mynginx --replicas=4
+
+# 10. Verify four replicas
+minikube kubectl -- get deployments
+minikube kubectl -- get pods -o wide
+minikube kubectl -- get service mynginx
+
+# 11. Access Nginx through browser
+minikube kubectl -- port-forward svc/mynginx 8081:80
+# Open http://localhost:8081
+
+# 12. Open Kubernetes Dashboard (another terminal)
+minikube dashboard
+
+# 13. Delete Kubernetes resources
+minikube kubectl -- delete deployment mynginx
+minikube kubectl -- delete service mynginx
+
+# 14. Stop Minikube
+minikube stop
+
+# Optional: Completely delete Minikube cluster
+minikube delete
+
+
+# ==========================================
+# PART B: NAGIOS USING DOCKER
+# ==========================================
+
+# 1. Pull Nagios image
+docker pull jasonrivers/nagios:latest
+
+# 2. Run Nagios container
+docker run --name nagiosdemo -p 8888:80 jasonrivers/nagios:latest
+
+# 3. Check running containers (another terminal)
+docker ps
+
+# 4. View Nagios logs
+docker logs nagiosdemo
+
+# 5. Continuously monitor logs
+docker logs -f nagiosdemo
+# Press Ctrl+C to stop viewing logs
+
+# 6. Open Nagios dashboard
+# http://localhost:8888
+# Username: nagiosadmin
+# Password: nagios
+
+# 7. Stop Nagios container
+docker stop nagiosdemo
+
+# 8. Remove Nagios container
+docker rm nagiosdemo
+
+# 9. List Docker images
+docker images
+
+# 10. Remove Nagios image
+docker rmi jasonrivers/nagios:latest
+
+
+# ==========================================
+# TROUBLESHOOTING COMMANDS
+# ==========================================
+
+# Describe a Pod
+minikube kubectl -- describe pod POD_NAME
+
+# View Pod logs
+minikube kubectl -- logs POD_NAME
+
+# View previous crashed container logs
+minikube kubectl -- logs POD_NAME --previous
+
+# View all resources
+minikube kubectl -- get all
+
+# Check Nagios container status
+docker ps -a
+
+# Inspect Nagios logs
+docker logs nagiosdemo
