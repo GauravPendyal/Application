@@ -1,0 +1,74 @@
+# 1. Update Ubuntu packages
+sudo apt update
+
+# 2. Install required tools
+sudo apt install -y docker.io git nano maven
+
+# 3. Start and enable Docker
+sudo systemctl enable --now docker
+
+# 4. Check installed versions
+mvn -version
+git --version
+docker --version
+
+# 5. Clone the GitHub repository
+git clone https://github.com/GauravPendyal/SE-Maven_web
+
+# 6. Navigate into the project
+cd SE-Maven_web
+
+# 7. View project files
+ls
+
+# 8. Check Dockerfile
+cat Dockerfile
+
+# 9. Check Maven configuration
+cat pom.xml
+
+# 10. Build the Maven project
+mvn clean package
+
+# 11. Check generated WAR file
+ls -lh target/
+
+# 12. Create/Edit Dockerfile (if needed)
+nano Dockerfile
+
+# Dockerfile contents:
+# FROM tomcat:9.0-jdk17-temurin
+# RUN rm -rf /usr/local/tomcat/webapps/ROOT
+# COPY target/mavenweb.war /usr/local/tomcat/webapps/ROOT.war
+# EXPOSE 8080
+# CMD ["catalina.sh", "run"]
+
+# 13. Build Docker image
+sudo docker build -t mavenweb .
+
+# 14. View Docker images
+sudo docker images
+
+# 15. Check running containers
+sudo docker ps
+
+# 16. Run the Docker container
+sudo docker run -d \
+  --name mavenweb-container \
+  -p 8080:8080 \
+  mavenweb
+
+# 17. Verify running container
+sudo docker ps
+
+# 18. View container logs (if needed)
+sudo docker logs mavenweb-container
+
+# 19. Check Docker service
+sudo systemctl status docker
+
+# 20. Stop container after experiment
+sudo docker stop mavenweb-container
+
+# 21. Start container again (if needed)
+sudo docker start mavenweb-container
